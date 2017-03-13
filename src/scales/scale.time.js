@@ -260,12 +260,9 @@ module.exports = function(Chart) {
 			if (!me.options.time.max) {
 				var roundedEnd = me.getMomentStartOf(me.lastTick);
 				var delta = roundedEnd.diff(me.lastTick, me.tickUnit, true);
-				if (delta < 0) {
-					// Do not use end of because we need me to be in the next time unit
-					me.lastTick = me.getMomentStartOf(me.lastTick.add(1, me.tickUnit));
-					
+				
 				/*
-				 * Code has been disabled with the intention of preventing the last label of a chart from colliding with
+				 * Code has been disabled with an intent to prevent the last label of a chart from colliding with
 				 * the second to last label.
 				 * 
 				 * This solution sacrifices some clarity on the chart, but does not impact data.
@@ -286,7 +283,6 @@ module.exports = function(Chart) {
 				//} else if (delta >= 0) {
 					me.lastTick = roundedEnd;
 				//}
-
 				me.scaleSizeInUnits = me.lastTick.diff(me.firstTick, me.tickUnit, true);
 			}
 
