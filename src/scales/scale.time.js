@@ -263,9 +263,29 @@ module.exports = function(Chart) {
 				if (delta < 0) {
 					// Do not use end of because we need me to be in the next time unit
 					me.lastTick = me.getMomentStartOf(me.lastTick.add(1, me.tickUnit));
-				} else if (delta >= 0) {
+					
+				/*
+				 * Code has been disabled with the intention of preventing the last label of a chart from colliding with
+				 * the second to last label.
+				 * 
+				 * This solution sacrifices some clarity on the chart, but does not impact data.
+				 * It's common to expect a label to come after the last data point in a chart.
+				 * However, the last data point needs to be a sufficient distance from the label to prevent
+				 * labels from colliding. This is an unknown value.
+				 * 
+				 * This would not be as large of an issue if chart label rotation applied to the last label.
+				 * However, it does not. Labels collide without considering rotation.
+				 * 
+				 * So, it seems the best fix is to omit the last label.
+				 * 
+				 * This is a known issue in Chart.js, but is unresolved: https://github.com/chartjs/Chart.js/issues/3069
+				 */
+				//if (delta < 0) {
+				//	// Do not use end of because we need me to be in the next time unit
+				//	me.lastTick = me.getMomentStartOf(me.lastTick.add(1, me.tickUnit));
+				//} else if (delta >= 0) {
 					me.lastTick = roundedEnd;
-				}
+				//}
 
 				me.scaleSizeInUnits = me.lastTick.diff(me.firstTick, me.tickUnit, true);
 			}
